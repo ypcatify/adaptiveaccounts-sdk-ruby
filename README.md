@@ -119,19 +119,38 @@ To get response status:
 
 ## Example
 
-    require 'paypal-sdk-adaptiveaccounts'
-    @api = PayPal::SDK::AdaptiveAccounts::API.new
+```ruby
+require 'paypal-sdk-adaptiveaccounts'
+@api = PayPal::SDK::AdaptiveAccounts::API.new
 
-    # Build request object
-    @get_verified_status_request = @api.build_get_verified_status()
-    @get_verified_status_request.emailAddress  = "test@example.com"
-    @get_verified_status_request.matchCriteria = "NONE"
+# Build request object
+@get_verified_status_request = @api.build_get_verified_status()
+@get_verified_status_request.emailAddress  = "test@example.com"
+@get_verified_status_request.matchCriteria = "NONE"
 
-    # Make API call & get response
-    @get_verified_status_response = @api.get_verified_status(@get_verified_status_request)
+# Make API call & get response
+@get_verified_status_response = @api.get_verified_status(@get_verified_status_request)
 
-    # Access Response
-    @get_verified_status_response.responseEnvelope
-    @get_verified_status_response.accountStatus
-    @get_verified_status_response.countryCode
-    @get_verified_status_response.userInfo
+# Access Response
+@get_verified_status_response.responseEnvelope
+@get_verified_status_response.accountStatus
+@get_verified_status_response.countryCode
+@get_verified_status_response.userInfo
+```
+
+## Samples
+
+Add following line in rails `Gemfile`:
+
+    gem 'paypal-sdk-adaptiveaccounts'
+    gem 'adaptive_accounts_samples', :git => "https://github.com/paypal/adaptiveaccounts-ruby.git", :group => :development
+
+Configure routes(`config/routes.rb`):
+
+    mount AdaptiveAccountsSamples::Engine => "/samples" if Rails.env.development?
+
+To get default paypal configuration execute:
+
+    rails g paypal:sdk:install
+
+Run `rails server` and check the samples.

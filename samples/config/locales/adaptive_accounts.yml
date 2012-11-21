@@ -1,0 +1,45 @@
+en:
+  adaptive_accounts:
+    create_account:
+      accountType: Personal
+      name:
+        salutation: Mr.
+        firstName: Bonzop
+        middleName: Simore
+        lastName: Zaius
+      dateOfBirth: "1968-01-01"
+      address:
+        line1: 1968 Ape Way
+        city: Austin
+        state: TX
+        postalCode: 78750
+        countryCode: US
+      registrationType: Web
+      createAccountWebOptions:
+        showAddCreditCard: true
+        showMobileConfirm: true
+        useMiniBrowser: false
+      suppressWelcomeEmail: false
+      businessInfo:
+        businessName: My business
+        businessAddress:
+          line1: 1968 Ape Way
+          city: Austin
+          state: TX
+          postalCode: 78750
+          countryCode: US
+        workPhone: "5126914160"
+        businessStakeholder:
+        - role: CHAIRMAN
+    add_bank_account:
+      bankCountryCode: US
+      bankName: Huntington Bank
+      routingNumber: "021473030"
+      bankAccountType: SAVINGS
+      bankAccountNumber: 162951
+      confirmationType: WEB
+      webOptions:
+        returnUrl:
+
+
+

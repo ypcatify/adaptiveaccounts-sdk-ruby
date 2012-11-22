@@ -196,7 +196,7 @@ module PayPal::SDK
           # Valid values are: Personal, Premier, and Business. Flag="2" corresponds to java.util.regex.Pattern.CASE_INSENSITIVE, meaning the strings are not case-sensitive 
           object_of :accountType, String
           object_of :name, NameType, :required => true
-          object_of :dateOfBirth, DateTime
+          object_of :dateOfBirth, Date
           object_of :address, AddressType, :required => true
           # Must provide at least one of contactPhoneNumber, homePhoneNumber, or mobilePhoneNumber 
           object_of :contactPhoneNumber, String
@@ -345,7 +345,7 @@ module PayPal::SDK
           # Tax id number for Brazil. 
           object_of :taxIdNumber, String
           # Date of birth of the account holder 
-          object_of :accountHolderDateOfBirth, DateTime
+          object_of :accountHolderDateOfBirth, Date
           object_of :confirmationType, ConfirmationType, :required => true
           object_of :webOptions, WebOptionsType
         end
@@ -378,7 +378,7 @@ module PayPal::SDK
           object_of :createAccountKey, String
           object_of :nameOnCard, NameType, :required => true
           object_of :billingAddress, AddressType, :required => true
-          object_of :cardOwnerDateOfBirth, DateTime
+          object_of :cardOwnerDateOfBirth, Date
           object_of :cardNumber, String, :required => true
           object_of :cardType, CardTypeType, :required => true
           object_of :expirationDate, CardDateType
@@ -418,7 +418,7 @@ module PayPal::SDK
           # This not considered when financialProductCategory=PRE_PAID_CARD 
           object_of :billingAddress, AddressType
           # This not considered when financialProductCategory=PRE_PAID_CARD 
-          object_of :cardOwnerDateOfBirth, DateTime
+          object_of :cardOwnerDateOfBirth, Date
           object_of :cardNumber, String, :required => true
           # Identify the kind of PayPal financial product. Possible value is : PRE_PAID_CARD 
           object_of :financialProductCategory, String, :required => true
@@ -582,7 +582,7 @@ module PayPal::SDK
           object_of :webSite, String
           # Company Id: tax id, acn, abn, etc. 
           object_of :companyId, String
-          object_of :dateOfEstablishment, DateTime
+          object_of :dateOfEstablishment, Date
           object_of :businessType, BusinessType
           object_of :businessSubtype, BusinessSubtypeType
           object_of :incorporationId, String
@@ -619,7 +619,7 @@ module PayPal::SDK
           object_of :name, NameType
           object_of :fullLegalName, String
           object_of :address, AddressType
-          object_of :dateOfBirth, DateTime
+          object_of :dateOfBirth, Date
         end
       end
 

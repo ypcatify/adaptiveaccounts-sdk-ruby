@@ -56,7 +56,7 @@ module AdaptiveAccountsSamples
     private
 
     def api
-      @api ||= API.new
+      @api ||= API.new( :device_ipaddress => request.remote_ip )
     end
   end
 end

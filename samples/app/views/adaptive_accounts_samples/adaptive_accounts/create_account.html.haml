@@ -13,9 +13,11 @@
       = f.input :contactPhoneNumber
       = f.input :homePhoneNumber
       = f.input :mobilePhoneNumber
+      = f.input :currencyCode
       = f.input :citizenshipCountryCode
       = f.input :preferredLanguageCode
       = f.input :notificationURL
+      = f.input :emailAddress
       = f.input :registrationType, :as => :select, :collection => [ "Web", "Mobile" ]
       %legend Web options
       = f.fields_for :createAccountWebOptions do |opt|
@@ -60,15 +62,6 @@
         = bi.input :vatId
         = bi.input :vatCountryCode
         = bi.input :commercialRegistrationLocation
-        %legend StakeHolder
-        = bi.fields_for :businessStakeholder do |sh|
-          = sh.input :role
-          = sh.input :fullLegalName
-          = sh.input :dateOfBirth
-          = sh.fields_for :name do |name|
-            = render 'name', :f => name
-          = sh.fields_for :address do |address|
-            = render 'address', :f => address
 
   .form-actions
     = f.submit "Submit", :class => "btn btn-primary", :data => { :disable_with => "Processing.." }

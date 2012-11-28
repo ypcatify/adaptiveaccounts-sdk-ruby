@@ -8,6 +8,13 @@ en:
         middleName: Simore
         lastName: Zaius
       dateOfBirth: "1968-01-01"
+      homePhoneNumber: "5126914160"
+      mobilePhoneNumber: "5126914160"
+      contactPhoneNumber: "5126914160"
+      citizenshipCountryCode: US
+      preferredLanguageCode: en_US
+      currencyCode: USD
+      emailAddress: newEmailAddress@paypal.com
       address:
         line1: 1968 Ape Way
         city: Austin
@@ -17,20 +24,8 @@ en:
       registrationType: Web
       createAccountWebOptions:
         showAddCreditCard: true
-        showMobileConfirm: true
         useMiniBrowser: false
       suppressWelcomeEmail: false
-      businessInfo:
-        businessName: My business
-        businessAddress:
-          line1: 1968 Ape Way
-          city: Austin
-          state: TX
-          postalCode: 78750
-          countryCode: US
-        workPhone: "5126914160"
-        businessStakeholder:
-        - role: CHAIRMAN
     add_bank_account:
       bankCountryCode: US
       bankName: Huntington Bank
@@ -40,6 +35,30 @@ en:
       confirmationType: WEB
       webOptions:
         returnUrl:
+    get_verified_status:
+      emailAddress: newEmailAddress@paypal.com
+      matchCriteria: NONE
+    add_payment_card:
+      nameOnCard:
+        salutation: Mr.
+        firstName: Bonzop
+        middleName: Simore
+        lastName: Zaius
+      billingAddress:
+        line1: 1968 Ape Way
+        city: Austin
+        state: TX
+        postalCode: 78750
+        countryCode: US
+      cardType: Visa
+      confirmationType: WEB
+      expirationDate:
+        month: "1"
+        year: "2022"
+      cardNumber: "4111111111111111"
+
+
+
 
 
 

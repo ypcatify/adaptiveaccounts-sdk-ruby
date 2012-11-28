@@ -6,27 +6,28 @@
       = f.input :emailAddress
       = f.input :accountId
       = f.input :createAccountKey
+      %legend Name on card
       = f.fields_for :nameOnCard do |name|
         = render 'name', :f => name
+      %legend Billing address
       = f.fields_for :billingAddress do |address|
         = render 'address', :f => address
+
+    .span5
+      %legend Card
       = f.input :cardNumber
       = f.input :cardType
       = f.input :cardOwnerDateOfBirth
       = f.input :cardVerificationNumber
       = f.input :issueNumber
+      = f.input :confirmationType
+      %legend Expire Date
       = f.fields_for :expirationDate do |edate|
         = edate.input :month, :as => :select, :collection => (1..12).to_a
         = edate.input :year
-      = f.fields_for :startDate do |sdate|
-        = sdate.input :month, :as => :select, :collection => (1..12).to_a
-        = sdate.input :year
-      = f.input :confirmationType
+      %legend Web Options
       = f.fields_for :webOptions do |opt|
         = render 'web_options', :f => opt
-
-    .span5
-      %legend Items
 
 
   .form-actions

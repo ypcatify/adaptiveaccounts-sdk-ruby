@@ -78,6 +78,12 @@ To make api request, we need to build a request object.
     # To build a request object with default data
     get_verified_status_request = api.build_get_verified_status( :emailAddress => "test@example.com", :matchCriteria => "NONE" )
 
+    # To build a request object with block
+    get_verified_status_request = api.build_get_verified_status do
+      self.emailAddress  = "test@example.com"
+      self.matchCriteria = "NONE"
+    end
+
 The Build method can be access with camelcase or underscore:
 
     api = api.build_get_verified_status()
@@ -95,6 +101,13 @@ Members can be access with camelcase or underscore format.
 To Assign multiple values:
 
     create_account_request.name = { :firstName = "first", :lastName => "last" }
+
+To Assign values with block
+
+    create_account_request.name do
+      self.firstName = "first"
+      self.lastName  = "last"
+    end
 
 To Get members list for the given object( For Reference ):
 

@@ -158,7 +158,7 @@ require 'paypal-sdk-adaptiveaccounts'
 Add following line in rails `Gemfile`:
 
     gem 'paypal-sdk-adaptiveaccounts'
-    gem 'adaptive_accounts_samples', :git => "https://github.com/paypal/adaptiveaccounts-ruby.git", :group => :development
+    gem 'adaptive_accounts_samples', :git => "https://github.com/paypal/adaptiveaccounts-sdk-ruby.git", :group => :development
 
 Configure routes(`config/routes.rb`):
 

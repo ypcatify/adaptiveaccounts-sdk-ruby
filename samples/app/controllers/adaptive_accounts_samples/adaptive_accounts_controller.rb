@@ -8,8 +8,19 @@ module AdaptiveAccountsSamples
       redirect_to :action => :create_account
     end
 
+    def ipn_notify
+      if PayPal::SDK::Core::IPN.verify?(request.raw_post)
+        logger.info("IPN message: VERIFIED")
+        render :text => "VERIFIED"
+      else
+        logger.info("IPN message: INVALID")
+        render :text => "INVALID"
+      end
+    end
+
     def create_account
       @create_account = api.build_create_account(params[:CreateAccountRequest] || default_api_value)
+      @create_account.notificationURL ||= ipn_notify_url
       @create_account_response = api.create_account(@create_account) if request.post?
     end
 

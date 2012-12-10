@@ -10,6 +10,7 @@ module AdaptiveAccountsSamples
 
     def create_account
       @create_account = api.build_create_account(params[:CreateAccountRequest] || default_api_value)
+      @create_account.createAccountWebOptions.returnUrl ||= adaptive_accounts_url(:create_account)
       @create_account_response = api.create_account(@create_account) if request.post?
     end
 

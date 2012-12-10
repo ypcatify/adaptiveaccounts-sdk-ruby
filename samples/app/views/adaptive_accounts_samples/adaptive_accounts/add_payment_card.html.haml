@@ -35,3 +35,4 @@
 
 - if @add_payment_card_response
   = render 'api_response', :request => @add_payment_card, :response => @add_payment_card_response
+  = link_to "Redirect Url", @add_payment_card_response.redirectURL if @add_payment_card_response.redirectURL

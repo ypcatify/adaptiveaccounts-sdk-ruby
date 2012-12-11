@@ -1,4 +1,4 @@
-# AdaptiveAccounts[ Work in progress !! ]
+# AdaptiveAccounts
 
 SDK for AdaptiveAccounts.
 

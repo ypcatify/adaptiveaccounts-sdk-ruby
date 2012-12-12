@@ -62,6 +62,10 @@ Override configuration while creating a object:
     api = PayPal::SDK::AdaptiveAccounts::API.new(:development, :app_id => "XYZ")
     api = PayPal::SDK::AdaptiveAccounts::API.new(:app_id => "XYZ")    # Take default environment.
 
+Configure devise ipaddress:
+
+    api = PayPal::SDK::AdaptiveAccounts::API.new( :device_ipaddress => "127.0.0.1" )
+
 Change configuration:
 
     api.set_config :testing

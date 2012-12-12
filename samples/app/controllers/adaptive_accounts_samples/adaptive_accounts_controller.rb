@@ -1,4 +1,5 @@
 require_dependency "adaptive_accounts_samples/application_controller"
+require "ipaddr"
 
 module AdaptiveAccountsSamples
   class AdaptiveAccountsController < ApplicationController
@@ -9,7 +10,7 @@ module AdaptiveAccountsSamples
     end
 
     def ipn_notify
-      if PayPal::SDK::Core::IPN.verify?(request.raw_post)
+      if PayPal::SDK::Core::IPN.valid?(request.raw_post)
         logger.info("IPN message: VERIFIED")
         render :text => "VERIFIED"
       else
@@ -68,7 +69,7 @@ module AdaptiveAccountsSamples
     private
 
     def api
-      @api ||= API.new( :device_ipaddress => request.remote_ip )
+      @api ||= API.new( :device_ipaddress => IPAddr.new(request.remote_ip).native.to_s )
     end
   end
 end

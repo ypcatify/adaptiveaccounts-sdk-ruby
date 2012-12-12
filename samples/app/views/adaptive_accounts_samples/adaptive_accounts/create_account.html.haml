@@ -68,3 +68,4 @@
 
 - if @create_account_response
   = render 'api_response', :request => @create_account, :response => @create_account_response
+  = link_to "Redirect Url", @create_account_response.redirectURL if @create_account_response.redirectURL

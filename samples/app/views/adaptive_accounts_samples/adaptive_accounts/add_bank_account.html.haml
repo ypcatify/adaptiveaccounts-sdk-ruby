@@ -38,3 +38,5 @@
 
 - if @add_bank_account_response
   = render 'api_response', :request => @add_bank_account, :response => @add_bank_account_response
+  = link_to "Redirect Url", @add_bank_account_response.redirectURL if @add_bank_account_response.redirectURL
+

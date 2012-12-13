@@ -1,3 +1,3 @@
 module AdaptiveAccountsSamples
-  VERSION = "0.95.0"
+  VERSION = "1.96.0"
 end

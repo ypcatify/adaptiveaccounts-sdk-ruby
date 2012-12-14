@@ -1,5 +1,4 @@
 require 'paypal-sdk-core'
-require 'paypal-sdk/adaptive_accounts/data_types'
 
 # AUTO GENERATED code for AdaptiveAccounts
 module PayPal::SDK

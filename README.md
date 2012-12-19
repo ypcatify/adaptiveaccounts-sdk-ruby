@@ -1,6 +1,6 @@
-# AdaptiveAccounts
+# Adaptive Accounts SDK
 
-SDK for AdaptiveAccounts.
+The PayPal Adaptive Accounts SDK provides Ruby APIs to create and manage PayPal accounts, add payment methods to accounts and obtain account verification status using the PayPal Adaptive Accounts API.
 
 ## Installation
 

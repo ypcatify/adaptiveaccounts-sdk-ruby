@@ -4,7 +4,7 @@ gemspec
 
 gem 'paypal-sdk-core', :git => "https://github.com/paypal/sdk-core-ruby.git"
 
-if Dir.exist? File.expand_path('../samples', __FILE__)
+if File.exist? File.expand_path('../samples/adaptive_accounts_samples.gemspec', __FILE__)
   gem 'adaptive_accounts_samples', :path => 'samples', :require => false
   group :test do
     gem 'rspec-rails', :require => false

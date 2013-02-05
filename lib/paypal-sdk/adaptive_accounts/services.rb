@@ -5,7 +5,7 @@ module PayPal::SDK
   module AdaptiveAccounts
 
 	  # Service Version
-	  SERVICE_VERSION = "1.0.3"
+	  SERVICE_VERSION = "1.1.0"
 	  # Service Name
 	  SERVICE_NAME = "AdaptiveAccounts"
 
@@ -183,6 +183,25 @@ module PayPal::SDK
         object
       end
       alias_method :build_activate_product, :BuildActivateProduct
+
+      # Service Call: UpdateComplianceStatus
+      # @param UpdateComplianceStatusRequest
+      # @return UpdateComplianceStatusResponse
+      def UpdateComplianceStatus(options = {} , http_header = {})
+        request_object  = BuildUpdateComplianceStatus(options)
+        request_hash    = request_object.to_hash
+        response_hash   = request("UpdateComplianceStatus", request_hash, http_header)
+        UpdateComplianceStatusResponse.new(response_hash)
+      end
+      alias_method :update_compliance_status, :UpdateComplianceStatus
+
+      def BuildUpdateComplianceStatus(options = {}, &block)
+        klass     = UpdateComplianceStatusRequest
+        object = options.is_a?(klass) ? options : klass.new(options || {})
+        object.instance_eval(&block) if block
+        object
+      end
+      alias_method :build_update_compliance_status, :BuildUpdateComplianceStatus
 
 
     end

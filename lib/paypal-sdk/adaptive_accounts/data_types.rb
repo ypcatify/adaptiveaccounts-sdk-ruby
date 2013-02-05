@@ -169,7 +169,7 @@ module PayPal::SDK
 
 
       class ProductActivationErrors < EnumType
-        self.options = { 'MISSINGPIN' => 'MISSING_PIN', 'MISSINGCC' => 'MISSING_CC', 'MISSINGMOBILEPHONE' => 'MISSING_MOBILE_PHONE', 'NOTALLOWED' => 'NOT_ALLOWED', 'MOBILEPHONENOTACTIVATED' => 'MOBILE_PHONE_NOT_ACTIVATED', 'INTERNALERROR' => 'INTERNAL_ERROR', 'PRODUCTEXISTS' => 'PRODUCT_EXISTS' }
+        self.options = { 'NOTALLOWED' => 'NOT_ALLOWED', 'MISSINGCC' => 'MISSING_CC', 'MISSINGMOBILEPHONE' => 'MISSING_MOBILE_PHONE', 'MISSINGPIN' => 'MISSING_PIN', 'MOBILEPHONENOTACTIVATED' => 'MOBILE_PHONE_NOT_ACTIVATED', 'PRODUCTEXISTS' => 'PRODUCT_EXISTS', 'UNCONFIRMEDMOBILE' => 'UNCONFIRMED_MOBILE', 'INTERNALERROR' => 'INTERNAL_ERROR' }
       end
 
 
@@ -180,7 +180,7 @@ module PayPal::SDK
           # Identifies the PayPal account based on the emailAddress. 
           object_of :emailAddress, String, :required => true
           # Identifies the PayPal account based on the phoneNumber. 
-          object_of :phoneNumber, String, :required => true
+          object_of :mobilePhoneNumber, String, :required => true
           # Identifies the PayPal account based on the accountId. 
           object_of :accountId, String, :required => true
         end
@@ -266,11 +266,14 @@ module PayPal::SDK
 
 
 
-      # matchCriteria determines which field(s) in addition to emailAddress is used to locate the account. Currently, we support matchCriteria of 'NAME' and 'NONE'. 
+      # Deprecated, use accountIdentifier.emailAddress instead 
       class GetVerifiedStatusRequest < DataType
         def self.load_members
           object_of :requestEnvelope, RequestEnvelope, :required => true
-          object_of :emailAddress, String, :required => true
+          # Deprecated, use accountIdentifier.emailAddress instead 
+          object_of :emailAddress, String
+          # Identifies a PayPal account to which this request is targeted. Caller of this API has to provide ONLY one of these inputs: emailAddress, accountId or mobilePhoneNumber. 
+          object_of :accountIdentifier, AccountIdentifierType
           # matchCriteria determines which field(s) in addition to emailAddress is used to locate the account. Currently, we support matchCriteria of 'NAME' and 'NONE'. 
           object_of :matchCriteria, String, :required => true
           # Required if matchCriteria is NAME Optional if matchCriteria is NONE 
@@ -519,6 +522,27 @@ module PayPal::SDK
 
 
 
+      class UpdateComplianceStatusRequest < DataType
+        def self.load_members
+          object_of :requestEnvelope, RequestEnvelope, :required => true
+          object_of :auditeeInfo, AuditeeInfoType, :required => true
+          object_of :auditorList, AuditorList
+          object_of :auditDetails, AuditDetailsType, :required => true
+        end
+      end
+
+
+
+      class UpdateComplianceStatusResponse < DataType
+        def self.load_members
+          object_of :responseEnvelope, ResponseEnvelope, :required => true
+          object_of :execStatus, String, :required => true
+          array_of :error, ErrorData
+        end
+      end
+
+
+
       class NameType < DataType
         def self.load_members
           object_of :salutation, String
@@ -661,6 +685,64 @@ module PayPal::SDK
           object_of :month, Integer, :required => true
           # Year in four digit format- YYYY 
           object_of :year, Integer, :required => true
+        end
+      end
+
+
+
+      class Auditor < DataType
+        def self.load_members
+          object_of :id, String, :required => true
+          object_of :name, String, :required => true
+          object_of :action, String, :required => true
+          object_of :notes, String
+        end
+      end
+
+
+
+      class TupleType < DataType
+        def self.load_members
+          object_of :name, String, :required => true
+          object_of :value, String, :required => true
+        end
+      end
+
+
+
+      class DocumentType < DataType
+        def self.load_members
+          object_of :type, String, :required => true
+          array_of :filename, String, :required => true
+        end
+      end
+
+
+
+      class AuditorList < DataType
+        def self.load_members
+          array_of :auditor, Auditor, :required => true
+        end
+      end
+
+
+
+      class AuditeeInfoType < DataType
+        def self.load_members
+          object_of :accountIdentifier, AccountIdentifierType, :required => true
+          array_of :document, DocumentType
+          array_of :data, TupleType
+        end
+      end
+
+
+
+      class AuditDetailsType < DataType
+        def self.load_members
+          object_of :status, String, :required => true
+          object_of :level, String, :required => true
+          object_of :method, String, :required => true
+          object_of :reason, String, :required => true
         end
       end
 

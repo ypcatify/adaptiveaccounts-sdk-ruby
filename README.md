@@ -39,7 +39,7 @@ For other ruby application, create a configuration file(`config/paypal.yml`):
       # # with Proxy
       # http_proxy: http://proxy-ipaddress:3129/
       # # with device ip address
-      # device_ipaddress: "127.0.0.1"
+      device_ipaddress: "127.0.0.1"
     test:
       <<: *default
     production:

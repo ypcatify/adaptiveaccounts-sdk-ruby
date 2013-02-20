@@ -140,21 +140,48 @@ To get response status:
 
 ```ruby
 require 'paypal-sdk-adaptiveaccounts'
-@api = PayPal::SDK::AdaptiveAccounts::API.new
+@api = PayPal::SDK::AdaptiveAccounts::API.new( :device_ipaddress => "127.0.0.1" )
 
 # Build request object
-@get_verified_status_request = @api.build_get_verified_status()
-@get_verified_status_request.emailAddress  = "test@example.com"
-@get_verified_status_request.matchCriteria = "NONE"
+@create_account = @api.build_create_account({
+  :accountType => "Personal",
+  :name => {
+    :salutation => "Mr.",
+    :firstName => "Bonzop",
+    :middleName => "Simore",
+    :lastName => "Zaius" },
+  :dateOfBirth => "1968-01-01",
+  :address => {
+    :line1 => "1968 Ape Way",
+    :city => "Austin",
+    :state => "TX",
+    :postalCode => "78750",
+    :countryCode => "US" },
+  :contactPhoneNumber => "5126914160",
+  :homePhoneNumber => "5126914160",
+  :mobilePhoneNumber => "5126914160",
+  :currencyCode => "USD",
+  :citizenshipCountryCode => "US",
+  :preferredLanguageCode => "en_US",
+  :notificationURL => "http://localhost:3000/samples/adaptive_accounts/ipn_notify",
+  :emailAddress => "newEmailAddress@paypal.com",
+  :registrationType => "Web",
+  :createAccountWebOptions => {
+    :returnUrl => "http://localhost:3000/samples/adaptive_accounts/create_account",
+    :showAddCreditCard => true } })
 
 # Make API call & get response
-@get_verified_status_response = @api.get_verified_status(@get_verified_status_request)
+@create_account_response = @api.create_account(@create_account)
+
+# Response status
+@create_account_response.responseEnvelope.ack # Return "Success" or "Failure"
 
 # Access Response
-@get_verified_status_response.responseEnvelope
-@get_verified_status_response.accountStatus
-@get_verified_status_response.countryCode
-@get_verified_status_response.userInfo
+@create_account_response.responseEnvelope
+@create_account_response.createAccountKey
+@create_account_response.execStatus
+@create_account_response.redirectURL
+@create_account_response.accountId
 ```
 
 ## Samples

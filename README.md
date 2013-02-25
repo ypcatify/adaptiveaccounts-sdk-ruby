@@ -40,6 +40,8 @@ For other ruby application, create a configuration file(`config/paypal.yml`):
       # http_proxy: http://proxy-ipaddress:3129/
       # # with device ip address
       device_ipaddress: "127.0.0.1"
+      # # Sandbox email address
+      sandbox_email_address: platform.sdk.seller@gmail.com
     test:
       <<: *default
     production:
@@ -140,7 +142,16 @@ To get response status:
 
 ```ruby
 require 'paypal-sdk-adaptiveaccounts'
-@api = PayPal::SDK::AdaptiveAccounts::API.new( :device_ipaddress => "127.0.0.1" )
+
+# device_ipaddress and sandbox_email_address is required for create_account.
+@api = PayPal::SDK::AdaptiveAccounts::API.new(
+  :mode      => "sandbox",  # Set "live" for production
+  :app_id    => "APP-80W284485P519543T",
+  :username  => "jb-us-seller_api1.paypal.com",
+  :password  => "WX4WTU3S8MY44S7F",
+  :signature => "AFcWxV21C7fd0v3bYYYRCpSSRl31A7yDhhsPUU2XhtMoZXsWHFxu-RWy",
+  :device_ipaddress => "127.0.0.1",
+  :sandbox_email_address => "platform.sdk.seller@gmail.com" )
 
 # Build request object
 @create_account = @api.build_create_account({

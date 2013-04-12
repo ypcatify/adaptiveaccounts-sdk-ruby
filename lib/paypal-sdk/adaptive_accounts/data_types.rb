@@ -14,6 +14,22 @@ module PayPal::SDK
         end
       end
 
+      module ResponseStatus
+        Status = { :success => ["Success", "SuccessWithWarning"],
+                   :warning => ["Warning", "SuccessWithWarning", "FailureWithWarning"],
+                   :failure => ["Failure", "FailureWithWarning"] }
+
+        def response_status
+          self.responseEnvelope && self.responseEnvelope.ack
+        end
+
+        Status.keys.each do |status|
+          define_method("#{status}?") do
+            Status[status].include?(self.response_status)
+          end
+        end
+      end
+
       class EnumType < Core::API::DataTypes::Enum
       end
 
@@ -86,6 +102,7 @@ module PayPal::SDK
       # This specifies a fault, encapsulating error data, with specific error codes. 
       class FaultMessage < DataType
         def self.load_members
+          include ResponseStatus
           object_of :responseEnvelope, ResponseEnvelope, :required => true
           array_of :error, ErrorData
         end
@@ -168,6 +185,27 @@ module PayPal::SDK
 
 
 
+      #  Generic Yes or No input validation type. 
+      class YesNoType < EnumType
+        self.options = { 'YES' => 'YES', 'NO' => 'NO' }
+      end
+
+
+
+      #  Government ID Types 
+      class GovernmentIDTypes < EnumType
+        self.options = { 'SIN' => 'SIN' }
+      end
+
+
+
+      #  Legal Agreement Types 
+      class LegalAgreementTypes < EnumType
+        self.options = { 'FINANCIALBINDINGAUTHORITY' => 'FINANCIAL_BINDING_AUTHORITY' }
+      end
+
+
+
       class ProductActivationErrors < EnumType
         self.options = { 'NOTALLOWED' => 'NOT_ALLOWED', 'MISSINGCC' => 'MISSING_CC', 'MISSINGMOBILEPHONE' => 'MISSING_MOBILE_PHONE', 'MISSINGPIN' => 'MISSING_PIN', 'MOBILEPHONENOTACTIVATED' => 'MOBILE_PHONE_NOT_ACTIVATED', 'PRODUCTEXISTS' => 'PRODUCT_EXISTS', 'UNCONFIRMEDMOBILE' => 'UNCONFIRMED_MOBILE', 'INTERNALERROR' => 'INTERNAL_ERROR' }
       end
@@ -224,6 +262,18 @@ module PayPal::SDK
           object_of :partnerField5, String
           # Required for business account creation 
           object_of :businessInfo, BusinessInfoType
+          # An ID representing a unique value, such as SSN, TIN, SIN, TaxID, etc. generally issued by a Government. Currently supports only SIN for Canada. 
+          array_of :governmentId, GovernmentIDPair
+          # Account Holder's profession, values such as: Accountant, Actuary, Advocate, Architect, Business Owner, Doctor, Dentist, Engineer, Financial Analyst, Lawyer, Librarian, Nurse, Pilot, Pharmacist, Physician, Physicial Therapist, Professor, Psychologist, Scientist, Teacher, Webmaster, Writer, Student, Other 
+          object_of :profession, String
+          # Account Holder's occupation. For business accounts only. Values: Executive, President, Vice President, Director, Manager, Staff, Other. 
+          object_of :occupation, String
+          # Account Holder's functional area. For business accounts only. Values: Finance, Operations, Technology, Sales, Marketing, Other 
+          object_of :functionalArea, String
+          # Boolean value, indicates whether user has agreed for a particular agreement or not. 
+          object_of :legalAgreement, LegalAgreementType
+          # Expected Value: 0|1|2|3|4|5 according to the description below: 0 - "Send payments for goods and/or services to domestic merchants" 1 - "Send payments for goods and/or services to cross-border merchants" 2 - "Send payments for goods and/or services to domestic and cross-border merchants" 3 - "Receive payments for goods and/or services from domestic buyers" 4 - "Receive payments for goods and/or services from cross-border buyers" 5 - "Receive payments for goods and/or service from domestic/cross-border buyers" 
+          object_of :purposeOfAccount, String
         end
       end
 
@@ -232,6 +282,7 @@ module PayPal::SDK
       # Valid values are: COMPLETED 
       class CreateAccountResponse < DataType
         def self.load_members
+          include ResponseStatus
           object_of :responseEnvelope, ResponseEnvelope, :required => true
           object_of :createAccountKey, String
           # Valid values are: COMPLETED 
@@ -258,6 +309,7 @@ module PayPal::SDK
 
       class GetUserAgreementResponse < DataType
         def self.load_members
+          include ResponseStatus
           object_of :responseEnvelope, ResponseEnvelope, :required => true
           object_of :agreement, String, :required => true
           array_of :error, ErrorData
@@ -288,6 +340,7 @@ module PayPal::SDK
       # Returned values are: VERIFIED|UNVERIFIED. 
       class GetVerifiedStatusResponse < DataType
         def self.load_members
+          include ResponseStatus
           object_of :responseEnvelope, ResponseEnvelope, :required => true
           # Returned values are: VERIFIED|UNVERIFIED. 
           object_of :accountStatus, String, :required => true
@@ -359,6 +412,7 @@ module PayPal::SDK
       # Valid values are: FUNDING_SOURCE_ADDED, WEB_URL_VERIFICATION_NEEDED 
       class AddBankAccountResponse < DataType
         def self.load_members
+          include ResponseStatus
           object_of :responseEnvelope, ResponseEnvelope, :required => true
           # Valid values are: FUNDING_SOURCE_ADDED, WEB_URL_VERIFICATION_NEEDED 
           object_of :execStatus, String, :required => true
@@ -400,6 +454,7 @@ module PayPal::SDK
       # Valid values are: FUNDING_SOURCE_ADDED, WEB_URL_VERIFICATION_NEEDED 
       class AddPaymentCardResponse < DataType
         def self.load_members
+          include ResponseStatus
           object_of :responseEnvelope, ResponseEnvelope, :required => true
           # Valid values are: FUNDING_SOURCE_ADDED, WEB_URL_VERIFICATION_NEEDED 
           object_of :execStatus, String, :required => true
@@ -441,6 +496,7 @@ module PayPal::SDK
       # Valid values are: CARD_ADDED 
       class AddPartnerFinancialProductResponse < DataType
         def self.load_members
+          include ResponseStatus
           object_of :responseEnvelope, ResponseEnvelope, :required => true
           # Valid values are: CARD_ADDED 
           object_of :execStatus, String, :required => true
@@ -466,6 +522,7 @@ module PayPal::SDK
 
       class SetFundingSourceConfirmedResponse < DataType
         def self.load_members
+          include ResponseStatus
           object_of :responseEnvelope, ResponseEnvelope, :required => true
           array_of :error, ErrorData
         end
@@ -473,11 +530,11 @@ module PayPal::SDK
 
 
 
-      # Identifies a PayPal account to which this request is targeted. Caller of this API has to provide ONLY one of these inputs: emailAddress, accountId or phoneNumber. 
+      # Identifies a PayPal account to which this request is targeted. Caller of this API has to provide ONLY one of these inputs: emailAddress, accountId or mobilePhoneNumber. 
       class CheckComplianceStatusRequest < DataType
         def self.load_members
           object_of :requestEnvelope, RequestEnvelope, :required => true
-          # Identifies a PayPal account to which this request is targeted. Caller of this API has to provide ONLY one of these inputs: emailAddress, accountId or phoneNumber. 
+          # Identifies a PayPal account to which this request is targeted. Caller of this API has to provide ONLY one of these inputs: emailAddress, accountId or mobilePhoneNumber. 
           object_of :accountIdentifier, AccountIdentifierType, :required => true
         end
       end
@@ -487,6 +544,7 @@ module PayPal::SDK
       # Returned values are: ALLOW|DENY 
       class CheckComplianceStatusResponse < DataType
         def self.load_members
+          include ResponseStatus
           object_of :responseEnvelope, ResponseEnvelope, :required => true
           # Returned values are: ALLOW|DENY 
           object_of :execStatus, String, :required => true
@@ -512,6 +570,7 @@ module PayPal::SDK
       # Valid values are: SUCCESS, FAILED 
       class ActivateProductResponse < DataType
         def self.load_members
+          include ResponseStatus
           object_of :responseEnvelope, ResponseEnvelope, :required => true
           # Valid values are: SUCCESS, FAILED 
           object_of :execStatus, String, :required => true
@@ -535,6 +594,7 @@ module PayPal::SDK
 
       class UpdateComplianceStatusResponse < DataType
         def self.load_members
+          include ResponseStatus
           object_of :responseEnvelope, ResponseEnvelope, :required => true
           object_of :execStatus, String, :required => true
           array_of :error, ErrorData
@@ -631,6 +691,14 @@ module PayPal::SDK
           object_of :establishmentState, String
           # All the stakeholders of the company. 
           array_of :businessStakeholder, BusinessStakeholderType
+          # Business entity acting on behalf of Third Party. 
+          object_of :businessEntityForThirdParty, BusinessEntityForThirdPartyType
+          # Values: Yes or No 
+          object_of :hasDirectors, YesNoType
+          # Values: Yes or No 
+          object_of :hasBeneficialOwners, YesNoType
+          # Values: Yes or No 
+          object_of :hasThirdPartyAssociates, YesNoType
         end
       end
 
@@ -644,6 +712,8 @@ module PayPal::SDK
           object_of :fullLegalName, String
           object_of :address, AddressType
           object_of :dateOfBirth, Date
+          # Occupation of the business stakeholder. Values such as: Accountant, Actuary, Advocate, Architect, Business Owner, Doctor, Dentist, Engineer, Financial Analyst, Lawyer, Librarian, Nurse, Pilot, Pharmacist, Physician, Physicial Therapist, Professor, Psychologist, Scientist, Teacher, Webmaster, Writer, Student, Other 
+          object_of :occupation, String
         end
       end
 
@@ -685,6 +755,54 @@ module PayPal::SDK
           object_of :month, Integer, :required => true
           # Year in four digit format- YYYY 
           object_of :year, Integer, :required => true
+        end
+      end
+
+
+
+      # Third party type: Individual or Business. 
+      class BusinessEntityForThirdPartyType < DataType
+        def self.load_members
+          # Third party type: Individual or Business. 
+          object_of :thirdPartyType, String
+          # If third party is individual, name of the individual. 
+          object_of :name, String
+          # If third party is individual, date of birth of the individual. 
+          object_of :dateOfBirth, Date
+          # Address of third party collecting the data. 
+          object_of :address, AddressType
+          # If third party is individual, profession of the individual representing third party. 
+          object_of :profession, String
+          # Relationship with third party, of the individual or the business. 
+          object_of :relationshipWithThirdParty, String
+          # Nature of Business, if third party is a business. 
+          object_of :natureOfBusiness, String
+          # Name of Business, if third party is a business. 
+          object_of :nameOfBusiness, String
+          # If third party is a business, collect the businessType. Values: Corporation, Private Company, Public Company, Partnership, Government Entity, Non-Profit Organization 
+          object_of :businessType, String
+          # If third party is a business, collect Incorporation ID. 
+          object_of :incorporationId, String
+          # If third party is business, collect place of issue of Incorporation. 
+          object_of :incorporationPlaceOfIssue, String
+        end
+      end
+
+
+
+      class GovernmentIDPair < DataType
+        def self.load_members
+          object_of :value, String
+          object_of :type, GovernmentIDTypes
+        end
+      end
+
+
+
+      class LegalAgreementType < DataType
+        def self.load_members
+          object_of :accepted, String
+          object_of :type, LegalAgreementTypes
         end
       end
 
@@ -743,6 +861,8 @@ module PayPal::SDK
           object_of :level, String, :required => true
           object_of :method, String, :required => true
           object_of :reason, String, :required => true
+          array_of :data, TupleType
+          object_of :policyVersion, String
         end
       end
 

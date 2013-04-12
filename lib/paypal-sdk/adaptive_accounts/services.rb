@@ -5,7 +5,7 @@ module PayPal::SDK
   module AdaptiveAccounts
 
 	  # Service Version
-	  SERVICE_VERSION = "1.1.0"
+	  SERVICE_VERSION = "1.2.0"
 	  # Service Name
 	  SERVICE_NAME = "AdaptiveAccounts"
 

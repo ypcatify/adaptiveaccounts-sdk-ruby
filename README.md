@@ -111,14 +111,11 @@ require 'paypal-sdk-adaptiveaccounts'
 @create_account_response = @api.create_account(@create_account)
 
 # Response status
-@create_account_response.responseEnvelope.ack # Return "Success" or "Failure"
-
-# Access Response
-@create_account_response.responseEnvelope
-@create_account_response.createAccountKey
-@create_account_response.execStatus
-@create_account_response.redirectURL
-@create_account_response.accountId
+if @create_account_response.success?
+  print @create_account_response.accountId
+else
+  print @create_account_response.error[0].message
+end
 ```
 
 For more samples [paypal-sdk-samples.herokuapp.com/adaptive_accounts/](https://paypal-sdk-samples.herokuapp.com/adaptive_accounts/)
